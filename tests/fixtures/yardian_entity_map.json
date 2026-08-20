@@ -1,0 +1,1655 @@
+[
+  {
+    "aid": 1,
+    "services": [
+      {
+        "iid": 1,
+        "type": "0000003E-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000014-0000-1000-8000-0026BB765291",
+            "iid": 2,
+            "perms": [
+              "pw"
+            ],
+            "format": "bool",
+            "description": "Identify"
+          },
+          {
+            "type": "00000020-0000-1000-8000-0026BB765291",
+            "iid": 3,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "Aeon Matrix Inc.",
+            "description": "Manufacturer",
+            "maxLen": 64
+          },
+          {
+            "type": "00000021-0000-1000-8000-0026BB765291",
+            "iid": 4,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "PRO1900",
+            "description": "Model",
+            "maxLen": 64
+          },
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 5,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "YardianProBA41",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "00000030-0000-1000-8000-0026BB765291",
+            "iid": 6,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "**REDACTED**",
+            "description": "Serial Number",
+            "maxLen": 64
+          },
+          {
+            "type": "00000052-0000-1000-8000-0026BB765291",
+            "iid": 7,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "6.24.20",
+            "description": "Firmware Revision",
+            "maxLen": 64
+          },
+          {
+            "type": "00000053-0000-1000-8000-0026BB765291",
+            "iid": 8,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "0.0.0",
+            "description": "Hardware Revision",
+            "maxLen": 64
+          }
+        ]
+      },
+      {
+        "iid": 16,
+        "type": "000000A2-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000037-0000-1000-8000-0026BB765291",
+            "iid": 17,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "1.1.0",
+            "description": "Version",
+            "maxLen": 64
+          }
+        ]
+      },
+      {
+        "iid": 18,
+        "type": "000000CC-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "000000CD-0000-1000-8000-0026BB765291",
+            "iid": 19,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Service Label Namespace",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1,
+            "valid-values": [
+              0,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "iid": 32,
+        "type": "000000CF-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 33,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "Yardian Irrigation System",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 34,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1,
+            "valid-values": [
+              0,
+              1
+            ]
+          },
+          {
+            "type": "000000D1-0000-1000-8000-0026BB765291",
+            "iid": 35,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Program Mode",
+            "minValue": 0,
+            "maxValue": 2,
+            "minStep": 1,
+            "valid-values": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 36,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1,
+            "valid-values": [
+              0,
+              1
+            ]
+          }
+        ],
+        "linked": [
+          48,
+          64,
+          80,
+          96,
+          112,
+          128,
+          144,
+          160,
+          176,
+          192,
+          208,
+          224
+        ]
+      },
+      {
+        "iid": 48,
+        "type": "000000D0-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 49,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "\"Master Bedroom Sprinkler\"",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 50,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 51,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D5-0000-1000-8000-0026BB765291",
+            "iid": 52,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Valve Type",
+            "minValue": 0,
+            "maxValue": 3,
+            "minStep": 1
+          },
+          {
+            "type": "000000D3-0000-1000-8000-0026BB765291",
+            "iid": 53,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 10,
+            "description": "Set Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D4-0000-1000-8000-0026BB765291",
+            "iid": 54,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Remaining Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D6-0000-1000-8000-0026BB765291",
+            "iid": 55,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Is Configured",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000CB-0000-1000-8000-0026BB765291",
+            "iid": 56,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Service Label Index",
+            "minValue": 1,
+            "maxValue": 12,
+            "minStep": 1
+          }
+        ],
+        "linked": [
+          18
+        ]
+      },
+      {
+        "iid": 64,
+        "type": "000000D0-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 65,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "\"Font Left Sprinkler\"",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 66,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 67,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D5-0000-1000-8000-0026BB765291",
+            "iid": 68,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Valve Type",
+            "minValue": 0,
+            "maxValue": 3,
+            "minStep": 1
+          },
+          {
+            "type": "000000D3-0000-1000-8000-0026BB765291",
+            "iid": 69,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 1200,
+            "description": "Set Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D4-0000-1000-8000-0026BB765291",
+            "iid": 70,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Remaining Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D6-0000-1000-8000-0026BB765291",
+            "iid": 71,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Is Configured",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000CB-0000-1000-8000-0026BB765291",
+            "iid": 72,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 2,
+            "description": "Service Label Index",
+            "minValue": 1,
+            "maxValue": 12,
+            "minStep": 1
+          }
+        ],
+        "linked": [
+          18
+        ]
+      },
+      {
+        "iid": 80,
+        "type": "000000D0-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 81,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "\"Front Right Sprinkler\"",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 82,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 83,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D5-0000-1000-8000-0026BB765291",
+            "iid": 84,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Valve Type",
+            "minValue": 0,
+            "maxValue": 3,
+            "minStep": 1
+          },
+          {
+            "type": "000000D3-0000-1000-8000-0026BB765291",
+            "iid": 85,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 1200,
+            "description": "Set Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D4-0000-1000-8000-0026BB765291",
+            "iid": 86,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Remaining Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D6-0000-1000-8000-0026BB765291",
+            "iid": 87,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Is Configured",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000CB-0000-1000-8000-0026BB765291",
+            "iid": 88,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 3,
+            "description": "Service Label Index",
+            "minValue": 1,
+            "maxValue": 12,
+            "minStep": 1
+          }
+        ],
+        "linked": [
+          18
+        ]
+      },
+      {
+        "iid": 96,
+        "type": "000000D0-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 97,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "\"Office Sprinkler\"",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 98,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 99,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D5-0000-1000-8000-0026BB765291",
+            "iid": 100,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Valve Type",
+            "minValue": 0,
+            "maxValue": 3,
+            "minStep": 1
+          },
+          {
+            "type": "000000D3-0000-1000-8000-0026BB765291",
+            "iid": 101,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 1200,
+            "description": "Set Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D4-0000-1000-8000-0026BB765291",
+            "iid": 102,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Remaining Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D6-0000-1000-8000-0026BB765291",
+            "iid": 103,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Is Configured",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000CB-0000-1000-8000-0026BB765291",
+            "iid": 104,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 4,
+            "description": "Service Label Index",
+            "minValue": 1,
+            "maxValue": 12,
+            "minStep": 1
+          }
+        ],
+        "linked": [
+          18
+        ]
+      },
+      {
+        "iid": 112,
+        "type": "000000D0-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 113,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "\"Bushes Sprinkler\"",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 114,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 115,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D5-0000-1000-8000-0026BB765291",
+            "iid": 116,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Valve Type",
+            "minValue": 0,
+            "maxValue": 3,
+            "minStep": 1
+          },
+          {
+            "type": "000000D3-0000-1000-8000-0026BB765291",
+            "iid": 117,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 60,
+            "description": "Set Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D4-0000-1000-8000-0026BB765291",
+            "iid": 118,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Remaining Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D6-0000-1000-8000-0026BB765291",
+            "iid": 119,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Is Configured",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000CB-0000-1000-8000-0026BB765291",
+            "iid": 120,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 5,
+            "description": "Service Label Index",
+            "minValue": 1,
+            "maxValue": 12,
+            "minStep": 1
+          }
+        ],
+        "linked": [
+          18
+        ]
+      },
+      {
+        "iid": 128,
+        "type": "000000D0-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 129,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "\"MyZone6\"",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 130,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 131,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D5-0000-1000-8000-0026BB765291",
+            "iid": 132,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Valve Type",
+            "minValue": 0,
+            "maxValue": 3,
+            "minStep": 1
+          },
+          {
+            "type": "000000D3-0000-1000-8000-0026BB765291",
+            "iid": 133,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 300,
+            "description": "Set Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D4-0000-1000-8000-0026BB765291",
+            "iid": 134,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Remaining Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D6-0000-1000-8000-0026BB765291",
+            "iid": 135,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Is Configured",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000CB-0000-1000-8000-0026BB765291",
+            "iid": 136,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 6,
+            "description": "Service Label Index",
+            "minValue": 1,
+            "maxValue": 12,
+            "minStep": 1
+          }
+        ],
+        "linked": [
+          18
+        ]
+      },
+      {
+        "iid": 144,
+        "type": "000000D0-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 145,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "\"MyZone7\"",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 146,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 147,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D5-0000-1000-8000-0026BB765291",
+            "iid": 148,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Valve Type",
+            "minValue": 0,
+            "maxValue": 3,
+            "minStep": 1
+          },
+          {
+            "type": "000000D3-0000-1000-8000-0026BB765291",
+            "iid": 149,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 300,
+            "description": "Set Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D4-0000-1000-8000-0026BB765291",
+            "iid": 150,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Remaining Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D6-0000-1000-8000-0026BB765291",
+            "iid": 151,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Is Configured",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000CB-0000-1000-8000-0026BB765291",
+            "iid": 152,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 7,
+            "description": "Service Label Index",
+            "minValue": 1,
+            "maxValue": 12,
+            "minStep": 1
+          }
+        ],
+        "linked": [
+          18
+        ]
+      },
+      {
+        "iid": 160,
+        "type": "000000D0-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 161,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "\"MyZone8\"",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 162,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 163,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D5-0000-1000-8000-0026BB765291",
+            "iid": 164,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Valve Type",
+            "minValue": 0,
+            "maxValue": 3,
+            "minStep": 1
+          },
+          {
+            "type": "000000D3-0000-1000-8000-0026BB765291",
+            "iid": 165,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 300,
+            "description": "Set Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D4-0000-1000-8000-0026BB765291",
+            "iid": 166,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Remaining Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D6-0000-1000-8000-0026BB765291",
+            "iid": 167,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Is Configured",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000CB-0000-1000-8000-0026BB765291",
+            "iid": 168,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 8,
+            "description": "Service Label Index",
+            "minValue": 1,
+            "maxValue": 12,
+            "minStep": 1
+          }
+        ],
+        "linked": [
+          18
+        ]
+      },
+      {
+        "iid": 176,
+        "type": "000000D0-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 177,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "\"MyZone9\"",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 178,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 179,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D5-0000-1000-8000-0026BB765291",
+            "iid": 180,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Valve Type",
+            "minValue": 0,
+            "maxValue": 3,
+            "minStep": 1
+          },
+          {
+            "type": "000000D3-0000-1000-8000-0026BB765291",
+            "iid": 181,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 300,
+            "description": "Set Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D4-0000-1000-8000-0026BB765291",
+            "iid": 182,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Remaining Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D6-0000-1000-8000-0026BB765291",
+            "iid": 183,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Is Configured",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000CB-0000-1000-8000-0026BB765291",
+            "iid": 184,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 9,
+            "description": "Service Label Index",
+            "minValue": 1,
+            "maxValue": 12,
+            "minStep": 1
+          }
+        ],
+        "linked": [
+          18
+        ]
+      },
+      {
+        "iid": 192,
+        "type": "000000D0-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 193,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "\"MyZone10\"",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 194,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 195,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D5-0000-1000-8000-0026BB765291",
+            "iid": 196,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Valve Type",
+            "minValue": 0,
+            "maxValue": 3,
+            "minStep": 1
+          },
+          {
+            "type": "000000D3-0000-1000-8000-0026BB765291",
+            "iid": 197,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 300,
+            "description": "Set Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D4-0000-1000-8000-0026BB765291",
+            "iid": 198,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Remaining Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D6-0000-1000-8000-0026BB765291",
+            "iid": 199,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Is Configured",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000CB-0000-1000-8000-0026BB765291",
+            "iid": 200,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 10,
+            "description": "Service Label Index",
+            "minValue": 1,
+            "maxValue": 12,
+            "minStep": 1
+          }
+        ],
+        "linked": [
+          18
+        ]
+      },
+      {
+        "iid": 208,
+        "type": "000000D0-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 209,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "\"MyZone11\"",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 210,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 211,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D5-0000-1000-8000-0026BB765291",
+            "iid": 212,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Valve Type",
+            "minValue": 0,
+            "maxValue": 3,
+            "minStep": 1
+          },
+          {
+            "type": "000000D3-0000-1000-8000-0026BB765291",
+            "iid": 213,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 300,
+            "description": "Set Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D4-0000-1000-8000-0026BB765291",
+            "iid": 214,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Remaining Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D6-0000-1000-8000-0026BB765291",
+            "iid": 215,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Is Configured",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000CB-0000-1000-8000-0026BB765291",
+            "iid": 216,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 11,
+            "description": "Service Label Index",
+            "minValue": 1,
+            "maxValue": 12,
+            "minStep": 1
+          }
+        ],
+        "linked": [
+          18
+        ]
+      },
+      {
+        "iid": 224,
+        "type": "000000D0-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 225,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "\"MyZone12\"",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "000000B0-0000-1000-8000-0026BB765291",
+            "iid": 226,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Active",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D2-0000-1000-8000-0026BB765291",
+            "iid": 227,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "In Use",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000D5-0000-1000-8000-0026BB765291",
+            "iid": 228,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 1,
+            "description": "Valve Type",
+            "minValue": 0,
+            "maxValue": 3,
+            "minStep": 1
+          },
+          {
+            "type": "000000D3-0000-1000-8000-0026BB765291",
+            "iid": 229,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 300,
+            "description": "Set Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D4-0000-1000-8000-0026BB765291",
+            "iid": 230,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Remaining Duration",
+            "minValue": 0,
+            "maxValue": 43200,
+            "minStep": 1
+          },
+          {
+            "type": "000000D6-0000-1000-8000-0026BB765291",
+            "iid": 231,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Is Configured",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          },
+          {
+            "type": "000000CB-0000-1000-8000-0026BB765291",
+            "iid": 232,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint8",
+            "value": 12,
+            "description": "Service Label Index",
+            "minValue": 1,
+            "maxValue": 12,
+            "minStep": 1
+          }
+        ],
+        "linked": [
+          18
+        ]
+      }
+    ]
+  }
+]

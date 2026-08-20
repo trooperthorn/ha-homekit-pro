@@ -1,0 +1,367 @@
+[
+  {
+    "aid": 1,
+    "services": [
+      {
+        "iid": 1,
+        "type": "0000003E-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000014-0000-1000-8000-0026BB765291",
+            "iid": 2,
+            "perms": [
+              "pw"
+            ],
+            "format": "bool",
+            "description": "Identify"
+          },
+          {
+            "type": "00000020-0000-1000-8000-0026BB765291",
+            "iid": 3,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "FirstAlert",
+            "description": "Manufacturer",
+            "maxLen": 64
+          },
+          {
+            "type": "00000021-0000-1000-8000-0026BB765291",
+            "iid": 4,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "1039102",
+            "description": "Model",
+            "maxLen": 64
+          },
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 5,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "Onelink Safe Sound CAF4",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "00000030-0000-1000-8000-0026BB765291",
+            "iid": 6,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "**REDACTED**",
+            "description": "Serial Number",
+            "maxLen": 64
+          },
+          {
+            "type": "00000052-0000-1000-8000-0026BB765291",
+            "iid": 7,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "1.04.84",
+            "description": "Firmware Revision",
+            "maxLen": 64
+          },
+          {
+            "type": "00000053-0000-1000-8000-0026BB765291",
+            "iid": 8,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "10.00.00",
+            "description": "Hardware Revision",
+            "maxLen": 64
+          },
+          {
+            "type": "000000A6-0000-1000-8000-0026BB765291",
+            "iid": 9,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint32",
+            "value": 0,
+            "description": "Accessory Flags",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 0
+          },
+          {
+            "type": "00000220-0000-1000-8000-0026BB765291",
+            "iid": 10,
+            "perms": [
+              "pr"
+            ],
+            "format": "data",
+            "value": "Vo8Wi5KITuQ="
+          },
+          {
+            "type": "34AB8811-AC7F-4340-BAC3-FD6A85F9943B",
+            "iid": 11,
+            "perms": [
+              "pr",
+              "hd"
+            ],
+            "format": "string",
+            "value": "6.1;72ca72be",
+            "maxLen": 64
+          }
+        ]
+      },
+      {
+        "iid": 17,
+        "type": "00000043-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 19,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "Nightlight",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "00000025-0000-1000-8000-0026BB765291",
+            "iid": 20,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "bool",
+            "value": true,
+            "description": "On"
+          },
+          {
+            "type": "00000008-0000-1000-8000-0026BB765291",
+            "iid": 21,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "int",
+            "value": 35,
+            "description": "Brightness",
+            "unit": "percentage",
+            "minValue": 0,
+            "maxValue": 100,
+            "minStep": 1
+          },
+          {
+            "type": "0000002F-0000-1000-8000-0026BB765291",
+            "iid": 22,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "float",
+            "value": 89,
+            "description": "Saturation",
+            "unit": "percentage",
+            "minValue": 0,
+            "maxValue": 100,
+            "minStep": 1
+          },
+          {
+            "type": "00000013-0000-1000-8000-0026BB765291",
+            "iid": 23,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ],
+            "format": "float",
+            "value": 324,
+            "description": "Hue",
+            "unit": "arcdegrees",
+            "minValue": 0,
+            "maxValue": 360,
+            "minStep": 1
+          }
+        ]
+      },
+      {
+        "iid": 24,
+        "type": "0000007F-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000069-0000-1000-8000-0026BB765291",
+            "iid": 27,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Carbon Monoxide Detected",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          }
+        ]
+      },
+      {
+        "iid": 28,
+        "type": "00000087-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 30,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "Smoke Alarm",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "00000076-0000-1000-8000-0026BB765291",
+            "iid": 31,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Smoke Detected",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          }
+        ]
+      },
+      {
+        "iid": 80,
+        "type": "0000022A-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "0000022B-0000-1000-8000-0026BB765291",
+            "iid": 82,
+            "perms": [
+              "pr"
+            ],
+            "format": "bool",
+            "value": true
+          },
+          {
+            "type": "0000022C-0000-1000-8000-0026BB765291",
+            "iid": 83,
+            "perms": [
+              "pr"
+            ],
+            "format": "uint32",
+            "value": 9,
+            "minValue": 0,
+            "maxValue": 15,
+            "minStep": 1
+          },
+          {
+            "type": "0000022D-0000-1000-8000-0026BB765291",
+            "iid": 84,
+            "perms": [
+              "pr",
+              "pw",
+              "ev",
+              "tw",
+              "wr"
+            ],
+            "format": "tlv8",
+            "value": "AgIAAAMEAAAAAA=="
+          }
+        ]
+      },
+      {
+        "iid": 32,
+        "type": "00000096-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000023-0000-1000-8000-0026BB765291",
+            "iid": 34,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "Battery",
+            "description": "Name",
+            "maxLen": 64
+          },
+          {
+            "type": "00000068-0000-1000-8000-0026BB765291",
+            "iid": 35,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 100,
+            "description": "Battery Level",
+            "unit": "percentage",
+            "minValue": 0,
+            "maxValue": 100,
+            "minStep": 1
+          },
+          {
+            "type": "0000008F-0000-1000-8000-0026BB765291",
+            "iid": 36,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Charging State",
+            "minValue": 0,
+            "maxValue": 2,
+            "minStep": 1
+          },
+          {
+            "type": "00000079-0000-1000-8000-0026BB765291",
+            "iid": 37,
+            "perms": [
+              "pr",
+              "ev"
+            ],
+            "format": "uint8",
+            "value": 0,
+            "description": "Status Low Battery",
+            "minValue": 0,
+            "maxValue": 1,
+            "minStep": 1
+          }
+        ]
+      },
+      {
+        "iid": 48,
+        "type": "000000A2-0000-1000-8000-0026BB765291",
+        "characteristics": [
+          {
+            "type": "00000037-0000-1000-8000-0026BB765291",
+            "iid": 50,
+            "perms": [
+              "pr"
+            ],
+            "format": "string",
+            "value": "1.1.0",
+            "description": "Version",
+            "maxLen": 64
+          }
+        ]
+      }
+    ]
+  }
+]

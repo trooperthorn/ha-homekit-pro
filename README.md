@@ -56,8 +56,13 @@ a staged upstream contribution.
   delete-and-re-add today) is still open.
 - **Phase 4 (cross-integration automation)** -- three blueprints added
   (see below), built directly on the entities from Phase 3.
-- **Phase 5 (QA) / Phase 6 (HACS packaging)** -- not started. No automated
-  tests yet; nothing installed against a live HA instance yet.
+- **Phase 5 (QA)** -- in progress. 21 tests added, all passing, exercising
+  entity logic against real captured HAP data (`tests/fixtures/*.json`,
+  extracted from the Phase 1 diagnostics pulls) rather than synthetic
+  values -- see Testing below. The blueprint action bodies are still
+  unverified beyond manual review (see Blueprints).
+- **Phase 6 (HACS packaging)** -- not started. Nothing installed against a
+  live HA instance yet.
 
 ## Blueprints
 
@@ -88,8 +93,29 @@ python -m venv .venv
 .venv/Scripts/pip install -r requirements_test.txt
 .venv/Scripts/pip install -e ../aiohomekit-fork
 .venv/Scripts/pytest tests/ -v
+.venv/Scripts/ruff check custom_components/ tests/
 ```
 
 Install into a real Home Assistant instance for manual testing by copying
 (or symlinking) `custom_components/homekit_controller_pro/` into that
 instance's `config/custom_components/`.
+
+## Testing
+
+`tests/` exercises entity logic (properties, `is_on`, `native_value`,
+writes via a mocked `put_characteristics`) directly against real captured
+HAP data in `tests/fixtures/*_entity_map.json` -- extracted from the Phase
+1 `diagnostics_raw/*.json` pulls (pairing keys stripped, only the
+service/characteristic structure kept) via a minimal `FakeHKDevice` stub
+in `tests/conftest.py`. No running Home Assistant instance needed for
+these.
+
+**Windows limitation**: `pytest-homeassistant-custom-component` (needed
+for `hass`-fixture-based tests -- config flow, coordinator, anything that
+needs a running HA core) auto-registers as a pytest plugin the moment it's
+installed, and importing it pulls in `homeassistant.runner`, which imports
+the Unix-only `fcntl` module. This breaks pytest entirely on native
+Windows, not just tests that use it. `pytest.ini` disables its auto-load
+(`-p no:homeassistant`) since the current suite doesn't need it. When
+config-flow-level tests are added, either run them under WSL/Linux/CI, or
+drop that `addopts` line there.
