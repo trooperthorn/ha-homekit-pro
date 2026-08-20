@@ -86,6 +86,21 @@ trigger and condition schemas) against the real installed
 `pytest-homeassistant-custom-component` harness, which isn't wired up
 yet (tracked for Phase 5).
 
+## Dependency on the aiohomekit fork
+
+`manifest.json`'s `requirements` pins `aiohomekit` to a GitHub tarball URL
+at a specific commit SHA (`.../archive/<sha>.tar.gz`), not a `git+https`
+URL. This was deliberate: `git+https` requirements need a `git` executable
+in whatever environment HA's requirements installer runs pip in, which
+Home Assistant OS's container may not have -- verified the tarball
+approach installs cleanly with plain pip (no git) in a fresh, isolated
+venv before switching to it.
+
+**Maintenance implication**: because it's pinned to a commit SHA, pushing
+new commits to the `aiohomekit` fork does **not** automatically flow into
+installs of this integration -- the SHA in `manifest.json` has to be
+bumped by hand after any aiohomekit-fork change that matters here.
+
 ## Development
 
 ```bash

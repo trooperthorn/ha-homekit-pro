@@ -15,6 +15,6 @@
   "integration_type": "device",
   "iot_class": "local_push",
   "loggers": ["aiohomekit"],
-  "requirements": ["aiohomekit @ git+https://github.com/trooperthorn/aiohomekit.git"],
+  "requirements": ["aiohomekit @ https://github.com/trooperthorn/aiohomekit/archive/562b38230a4cffbbc535e50f38edbe6b36984e4b.tar.gz"],
   "zeroconf": ["_hap._tcp.local.", "_hap._udp.local."]
 }
