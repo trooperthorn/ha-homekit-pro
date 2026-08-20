@@ -78,7 +78,20 @@ class HomeKitTelevision(HomeKitEntity, MediaPlayerEntity):
             # Characterics that are on the linked INPUT_SOURCE services
             CharacteristicsTypes.CONFIGURED_NAME,
             CharacteristicsTypes.IDENTIFIER,
+            # Characteristics that are on a linked SPEAKER service
+            CharacteristicsTypes.VOLUME,
+            CharacteristicsTypes.MUTE,
         ]
+
+    @property
+    def _speaker_service(self) -> Service | None:
+        """Return the linked Speaker service for this television, if any."""
+        this_accessory = self._accessory.entity_map.aid(self._aid)
+        this_tv = this_accessory.services.iid(self._iid)
+        return this_accessory.services.first(
+            service_type=ServicesTypes.SPEAKER,
+            parent_service=this_tv,
+        )
 
     @property
     @override
@@ -104,6 +117,12 @@ class HomeKitTelevision(HomeKitEntity, MediaPlayerEntity):
             and RemoteKeyValues.PLAY_PAUSE in self.supported_remote_keys
         ):
             features |= MediaPlayerEntityFeature.PAUSE | MediaPlayerEntityFeature.PLAY
+
+        if (speaker := self._speaker_service) is not None:
+            if speaker.has(CharacteristicsTypes.VOLUME):
+                features |= MediaPlayerEntityFeature.VOLUME_SET
+            if speaker.has(CharacteristicsTypes.MUTE):
+                features |= MediaPlayerEntityFeature.VOLUME_MUTE
 
         return features
 
@@ -166,6 +185,25 @@ class HomeKitTelevision(HomeKitEntity, MediaPlayerEntity):
         assert input_source
         char = input_source[CharacteristicsTypes.CONFIGURED_NAME]
         return char.value
+
+    @property
+    @override
+    def volume_level(self) -> float | None:
+        """Volume level of the media player, range 0..1."""
+        if (speaker := self._speaker_service) is None:
+            return None
+        volume = speaker.value(CharacteristicsTypes.VOLUME)
+        if volume is None:
+            return None
+        return volume / 100
+
+    @property
+    @override
+    def is_volume_muted(self) -> bool | None:
+        """Return True if volume is currently muted."""
+        if (speaker := self._speaker_service) is None:
+            return None
+        return speaker.value(CharacteristicsTypes.MUTE)
 
     @property
     @override
@@ -255,3 +293,21 @@ class HomeKitTelevision(HomeKitEntity, MediaPlayerEntity):
         await self.async_put_characteristics(
             {CharacteristicsTypes.ACTIVE_IDENTIFIER: identifier.value}
         )
+
+    @override
+    async def async_set_volume_level(self, volume: float) -> None:
+        """Set volume level, range 0..1, on the linked Speaker service."""
+        if (speaker := self._speaker_service) is None:
+            return
+        payload = speaker.build_update(
+            {CharacteristicsTypes.VOLUME: round(volume * 100)}
+        )
+        await self._accessory.put_characteristics(payload)
+
+    @override
+    async def async_mute_volume(self, mute: bool) -> None:
+        """Mute or unmute the volume on the linked Speaker service."""
+        if (speaker := self._speaker_service) is None:
+            return
+        payload = speaker.build_update({CharacteristicsTypes.MUTE: mute})
+        await self._accessory.put_characteristics(payload)

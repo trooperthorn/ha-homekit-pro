@@ -143,6 +143,28 @@ def thread_status_to_str(char: Characteristic) -> str:
     return "disabled"
 
 
+def ecobee_equipment_running_to_str(char: Characteristic) -> str:
+    """Return the Ecobee equipment-running state as a string.
+
+    Value meanings observed on a single unit (aiohomekit PR #548) and not
+    independently confirmed -- treat as best-effort.
+    """
+    return {0: "idle", 1: "heat", 2: "cool", 3: "fan", 4: "aux"}.get(
+        char.value, "unknown"
+    )
+
+
+def ecobee_status_code_to_str(char: Characteristic) -> str:
+    """Return the Ecobee thermostat status code as a string.
+
+    Value meanings observed on a single unit (aiohomekit PR #548) and not
+    independently confirmed -- treat as best-effort.
+    """
+    return {0: "ok", 1: "service", 2: "alert", 3: "error"}.get(
+        char.value, "unknown"
+    )
+
+
 SIMPLE_SENSOR: dict[str, HomeKitSensorEntityDescription] = {
     CharacteristicsTypes.VENDOR_CONNECTSENSE_ENERGY_WATT: (
         HomeKitSensorEntityDescription(
@@ -380,6 +402,30 @@ SIMPLE_SENSOR: dict[str, HomeKitSensorEntityDescription] = {
             state_class=SensorStateClass.MEASUREMENT,
             native_unit_of_measurement=UnitOfRatio.PERCENTAGE,
         )
+    ),
+    CharacteristicsTypes.VENDOR_ECOBEE_ALERT_TEXT: HomeKitSensorEntityDescription(
+        key=CharacteristicsTypes.VENDOR_ECOBEE_ALERT_TEXT,
+        name="Alert",
+        translation_key="ecobee_alert_text",
+    ),
+    CharacteristicsTypes.VENDOR_ECOBEE_EQUIPMENT_RUNNING: (
+        HomeKitSensorEntityDescription(
+            key=CharacteristicsTypes.VENDOR_ECOBEE_EQUIPMENT_RUNNING,
+            name="Equipment Running",
+            format=ecobee_equipment_running_to_str,
+            device_class=SensorDeviceClass.ENUM,
+            options=["idle", "heat", "cool", "fan", "aux", "unknown"],
+            translation_key="ecobee_equipment_running",
+        )
+    ),
+    CharacteristicsTypes.VENDOR_ECOBEE_STATUS_CODE: HomeKitSensorEntityDescription(
+        key=CharacteristicsTypes.VENDOR_ECOBEE_STATUS_CODE,
+        name="Status",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        format=ecobee_status_code_to_str,
+        device_class=SensorDeviceClass.ENUM,
+        options=["ok", "service", "alert", "error", "unknown"],
+        translation_key="ecobee_status_code",
     ),
 }
 

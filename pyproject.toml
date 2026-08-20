@@ -1,0 +1,97 @@
+[tool.ruff]
+required-version = ">=0.16.3"
+
+[tool.ruff.lint]
+select = [
+  "A001",   # Variable {name} is shadowing a Python builtin
+  "ASYNC",  # flake8-async
+  "B",      # flake8-bugbear
+  "BLE",
+  "C",      # complexity
+  "COM818", # Trailing comma on bare tuple prohibited
+  "D",      # docstrings
+  "DTZ003", # Use datetime.now(tz=) instead of datetime.utcnow()
+  "DTZ004", # Use datetime.fromtimestamp(ts, tz=) instead of datetime.utcfromtimestamp(ts)
+  "DTZ011", # Use datetime.now(tz=).date() instead of date.today()
+  "E",      # pycodestyle
+  "F",      # pyflakes/autoflake
+  "F541",   # f-string without any placeholders
+  "FLY",    # flynt
+  "FURB",   # refurb
+  "G",      # flake8-logging-format
+  "I",      # isort
+  "INP",    # flake8-no-pep420
+  "ISC",    # flake8-implicit-str-concat
+  "ICN001", # import concentions; {name} should be imported as {asname}
+  "LOG",    # flake8-logging
+  "N804",   # First argument of a class method should be named cls
+  "N805",   # First argument of a method should be named self
+  "N806",   # Variable {name} in function should be snake_case
+  "N815",   # Variable {name} in class scope should not be mixedCase
+  "PERF",   # Perflint
+  "PGH",    # pygrep-hooks
+  "PIE",    # flake8-pie
+  "PL",     # pylint
+  "PT",     # flake8-pytest-style
+  "PTH",    # flake8-pathlib
+  "PYI",    # flake8-pyi
+  "RET",    # flake8-return
+  "RSE",    # flake8-raise
+  "RUF",    # Ruff-specific rules (see `ignore` for exclusions)
+  "SIM",    # flake8-simplify
+  "SLF",    # flake8-self
+  "SLOT",   # flake8-slots
+  "T100",   # Trace found: {name} used
+  "T20",    # flake8-print
+  "TC",     # flake8-type-checking
+  "TID",    # Tidy imports
+  "TRY",    # tryceratops
+  "UP",     # pyupgrade
+  "UP031",  # Use format specifiers instead of percent format
+  "UP032",  # Use f-string instead of `format` call
+  "W",      # pycodestyle
+]
+
+# Mirrors home-assistant/core's own ignore list (pyproject.toml) so linting
+# this fork holds itself to the same bar as upstream, not a stricter one.
+ignore = [
+  "ASYNC109", "ASYNC110", "ASYNC240",
+  "B008", "B019",
+  "D202", "D203", "D213", "D406", "D407", "D417",
+  "E501",
+  "PLC1901", "PLR0911", "PLR0912", "PLR0913", "PLR0915", "PLR0917",
+  "PLR2004", "PLW0108", "PLW1641", "PLW2901",
+  "PT011", "PT018",
+  "RUF001", "RUF012", "RUF015", "RUF043",
+  "SIM102", "SIM103", "SIM108", "SIM115",
+  "TC001", "TC002", "TC003", "TC006",
+  "TRY003", "TRY400",
+  "UP047", "UP049",
+  "W191", "E111", "E114", "E117", "D206", "D300", "Q", "COM812", "COM819",
+  "PLE0605", "FURB116", "ISC004", "LOG004",
+]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"async_timeout".msg = "use asyncio.timeout instead"
+"pytz".msg = "use zoneinfo instead"
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+# Kept as first-party (even though it's a pip dependency here, not part of
+# this repo) to match the import grouping already used throughout the code
+# copied from home-assistant/core -- avoids a large unrelated reformat.
+known-first-party = ["homeassistant"]
+combine-as-imports = true
+split-on-trailing-comma = false
+
+[tool.ruff.lint.per-file-ignores]
+# Allow relative imports within the integration, same as upstream allows
+# within homeassistant/components/*/*
+"custom_components/*/*" = ["TID252"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 25
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+property-decorators = ["propcache.api.cached_property"]

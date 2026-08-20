@@ -27,6 +27,7 @@ OUTLET_IN_USE = "outlet_in_use"
 ATTR_IN_USE = "in_use"
 ATTR_IS_CONFIGURED = "is_configured"
 ATTR_REMAINING_DURATION = "remaining_duration"
+ATTR_PROGRAM_MODE = "program_mode"
 
 
 @dataclass(frozen=True)
@@ -190,6 +191,58 @@ class HomeKitValve(HomeKitEntity, SwitchEntity):
         return attrs
 
 
+class HomeKitIrrigationSystem(HomeKitEntity, SwitchEntity):
+    """Represents the system-level Active/Program Mode state of an irrigation system.
+
+    Individual zones are separate VALVE services (see HomeKitValve) linked
+    to this service; this entity is the parent IRRIGATION_SYSTEM service,
+    which previously had no HA entity at all.
+    """
+
+    _attr_translation_key = "irrigation_system"
+
+    @override
+    def get_characteristic_types(self) -> list[str]:
+        """Define the homekit characteristics the entity cares about."""
+        return [
+            CharacteristicsTypes.ACTIVE,
+            CharacteristicsTypes.PROGRAM_MODE,
+            CharacteristicsTypes.IN_USE,
+        ]
+
+    @override
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Turn the irrigation system on."""
+        await self.async_put_characteristics({CharacteristicsTypes.ACTIVE: True})
+
+    @override
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        """Turn the irrigation system off."""
+        await self.async_put_characteristics({CharacteristicsTypes.ACTIVE: False})
+
+    @property
+    @override
+    def is_on(self) -> bool:
+        """Return true if the irrigation system is active."""
+        return self.service.value(CharacteristicsTypes.ACTIVE)
+
+    @property
+    @override
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return the optional state attributes."""
+        attrs = {}
+
+        in_use = self.service.value(CharacteristicsTypes.IN_USE)
+        if in_use is not None:
+            attrs[ATTR_IN_USE] = in_use == InUseValues.IN_USE
+
+        program_mode = self.service.value(CharacteristicsTypes.PROGRAM_MODE)
+        if program_mode is not None:
+            attrs[ATTR_PROGRAM_MODE] = program_mode
+
+        return attrs
+
+
 class DeclarativeCharacteristicSwitch(CharacteristicEntity, SwitchEntity):
     """Representation of a Homekit switch backed by a single characteristic."""
 
@@ -238,11 +291,14 @@ class DeclarativeCharacteristicSwitch(CharacteristicEntity, SwitchEntity):
         )
 
 
-ENTITY_TYPES: dict[str, type[HomeKitSwitch | HomeKitFaucet | HomeKitValve]] = {
+ENTITY_TYPES: dict[
+    str, type[HomeKitSwitch | HomeKitFaucet | HomeKitValve | HomeKitIrrigationSystem]
+] = {
     ServicesTypes.SWITCH: HomeKitSwitch,
     ServicesTypes.OUTLET: HomeKitSwitch,
     ServicesTypes.FAUCET: HomeKitFaucet,
     ServicesTypes.VALVE: HomeKitValve,
+    ServicesTypes.IRRIGATION_SYSTEM: HomeKitIrrigationSystem,
 }
 
 
@@ -260,7 +316,9 @@ async def async_setup_entry(
         if not (entity_class := ENTITY_TYPES.get(service.type)):
             return False
         info = {"aid": service.accessory.aid, "iid": service.iid}
-        entity: HomeKitSwitch | HomeKitFaucet | HomeKitValve = entity_class(conn, info)
+        entity: HomeKitSwitch | HomeKitFaucet | HomeKitValve | HomeKitIrrigationSystem = (
+            entity_class(conn, info)
+        )
         conn.async_migrate_unique_id(
             entity.old_unique_id, entity.unique_id, Platform.SWITCH
         )

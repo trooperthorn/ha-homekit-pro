@@ -191,6 +191,13 @@ CHARACTERISTIC_BINARY_SENSORS: dict[str, HomeKitBinarySensorEntityDescription] =
         device_class=BinarySensorDeviceClass.PROBLEM,
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
+    CharacteristicsTypes.VENDOR_ECOBEE_AUX_HEAT_ACTIVE: (
+        HomeKitBinarySensorEntityDescription(
+            key=CharacteristicsTypes.VENDOR_ECOBEE_AUX_HEAT_ACTIVE,
+            name="Aux Heat Active",
+            device_class=BinarySensorDeviceClass.RUNNING,
+        )
+    ),
 }
 
 
