@@ -18,12 +18,15 @@ Reworking local communication with four paired HomeKit accessories to pull
 more data, support writing values where the device allows, cut latency, and
 shrink the device-to-HA update delay:
 
-| Device | Focus |
+| Device | Status |
 |---|---|
-| Ecobee thermostat | Already fairly capable via HomeKit on this (older) unit -- full climate control plus per-room temperature/motion/occupancy sensors work today. Tightening what's exposed: fold "Current Mode" into the climate entity's `preset_mode`, fan-state/`hvac_action` reliability. |
-| First Alert Onelink Safe & Sound (1039102) | Only integration path for this device -- no native HA integration exists. Two known upstream BLE pairing-failure bugs ([core#77926](https://github.com/home-assistant/core/issues/77926), [core#80451](https://github.com/home-assistant/core/issues/80451)) never got fixed; highest-risk workstream. |
-| Yardian Pro irrigation | Native `yardian` integration is richer, but improving the HomeKit path anyway for a consistent HomeKit-based approach. Needs a real `valve` domain entity instead of today's `switch` mapping. |
-| Roku TV | Confirmed bug: shows as unavailable/"lost" when off instead of a clean `off` state. |
+| Ecobee thermostat (bridge with 8 SmartSensors) | Four new vendor sensors wired up: maintenance alert text, equipment-running state, status code, aux-heat-active. "Current Mode" turned out to be read-only over HAP (no `pw` permission) -- folding it into `preset_mode` isn't viable, corrected from the original plan. |
+| First Alert Onelink Safe & Sound (1039102) | Only integration path for this device -- no native HA integration exists. Currently paired over IP, not BLE, so the historical BLE-pairing-failure issues don't appear to affect this unit. Everything it publishes (smoke, CO, nightlight, battery) is already standard-mapped; a disabled battery entity just needs re-enabling in HA, not code. |
+| Yardian Pro irrigation | New `HomeKitIrrigationSystem` entity closes the confirmed zero-entity gap on the parent `IrrigationSystem` service. Migrating the 12 existing per-zone entities to HA's native `valve` domain is a deliberate, separate, still-open decision (breaking change). |
+| Roku TV | Volume/mute now wired to the linked Speaker service (was previously invisible to HA despite the device supporting it). The "shows unavailable when off" bug is traced but not fixed -- needs live testing to tell which of two code paths is responsible. |
+
+Full findings, corrections, and what's still open per device are in
+[`docs/device-notes.md`](docs/device-notes.md).
 
 Full research (HA/aiohomekit architecture, HAP spec sourcing, per-device
 characteristic gaps, upstream contribution reality) lives in `docs/`.
@@ -35,21 +38,48 @@ a staged upstream contribution.
 
 ## Status
 
-**Phase 0 (repo scaffolding) -- in progress.** `custom_components/homekit_controller_pro/`
-is seeded from HA core's `homekit_controller` (domain renamed throughout:
-`DOMAIN`, manifest, device-registry identifier prefixes, `strings.json`
-translation-key self-references -- see git history for the exact diff from
-upstream). Not yet installed against a live HA instance; no tests yet.
+- **Phase 0 (repo scaffolding)** -- done. Domain renamed throughout, dev
+  environment matches the real target (Python 3.14, HA 2026.8.2 exactly),
+  HA core's own ruff config adapted in so lint reflects real HA standards.
+- **Phase 1 (live diagnostics audit)** -- done. Real HAP data pulled for
+  all four devices; see `docs/device-notes.md`.
+- **Phase 2 (aiohomekit library layer)** -- mostly turned out to be
+  unnecessary: nearly every vendor characteristic these devices publish
+  was already modeled in the `aiohomekit` fork, just not dispatched to a
+  platform on the `homekit_controller_pro` side. Onelink's BLE-pairing
+  reliability work (originally flagged highest-risk) is on hold since
+  this unit pairs over IP successfully, not BLE.
+- **Phase 3 (entity/UX work per device)** -- Roku volume/mute, Yardian
+  irrigation-system entity, and four Ecobee vendor sensors are done (all
+  verified with a real import against the installed HA + aiohomekit, not
+  just syntax-checked). Config/reconfigure UX (no way to re-pair without
+  delete-and-re-add today) is still open.
+- **Phase 4 (cross-integration automation)** -- three blueprints added
+  (see below), built directly on the entities from Phase 3.
+- **Phase 5 (QA) / Phase 6 (HACS packaging)** -- not started. No automated
+  tests yet; nothing installed against a live HA instance yet.
 
-**Next: Phase 1**, a live diagnostics audit against the real paired
-accessories on the local network, before writing any feature code --
-verifying exactly what each device publishes over HAP rather than assuming
-from public docs (this already caught one wrong assumption: generic
-community reports claimed Ecobee never exposes room sensors over HomeKit,
-but this unit does).
+## Blueprints
 
-See the full phased plan for Phases 2-6 (library-layer fixes, entity/UX
-work per device, automation blueprints, QA, HACS packaging).
+`blueprints/automation/`:
+
+- `smoke_co_severe_event.yaml` -- urgent notification the moment a
+  smoke or CO binary_sensor trips. Generic (any device_class match), not
+  Onelink-specific.
+- `ecobee_equipment_anomaly.yaml` -- notifies on a status-code change to
+  alert/error, or equipment running continuously past a configurable
+  threshold. Built around this session's new Ecobee vendor sensors.
+- `irrigation_unexpected_activation.yaml` -- notifies if an irrigation
+  switch/valve turns on outside an allowed time window. Built around the
+  new Yardian `HomeKitIrrigationSystem` entity but works with any
+  switch/valve.
+
+All three validated structurally (blueprint `input`/selector schemas,
+trigger and condition schemas) against the real installed
+`homeassistant` package. The `notify.send_message` action bodies were
+**not** validated end-to-end -- that needs a live HA instance or the
+`pytest-homeassistant-custom-component` harness, which isn't wired up
+yet (tracked for Phase 5).
 
 ## Development
 

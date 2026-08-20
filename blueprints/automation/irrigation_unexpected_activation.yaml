@@ -1,0 +1,65 @@
+blueprint:
+  name: Irrigation Unexpected Activation Notification
+  description: >-
+    Notify if an irrigation system (or an individual zone) turns on outside
+    an allowed time window -- catches a stuck valve, a misfired schedule
+    elsewhere, or a manual/HomeKit activation nobody meant to leave running.
+    Built around the HomeKitIrrigationSystem entity homekit_controller_pro
+    adds for Yardian's IrrigationSystem service, but works with any
+    switch/valve entity.
+  domain: automation
+  source_url: https://github.com/trooperthorn/ha-homekit-pro/blob/master/blueprints/automation/irrigation_unexpected_activation.yaml
+  input:
+    irrigation_entity:
+      name: Irrigation entity
+      description: The irrigation system or zone entity to watch.
+      selector:
+        entity:
+          domain:
+            - switch
+            - valve
+    allowed_start:
+      name: Allowed window start
+      default: "05:00:00"
+      selector:
+        time: {}
+    allowed_end:
+      name: Allowed window end
+      default: "09:00:00"
+      selector:
+        time: {}
+    notify_target:
+      name: Notify target
+      description: The notify entity to send the alert to.
+      selector:
+        entity:
+          domain: notify
+
+variables:
+  allowed_start: !input allowed_start
+  allowed_end: !input allowed_end
+
+triggers:
+  - trigger: state
+    entity_id: !input irrigation_entity
+    to: "on"
+
+conditions:
+  - condition: not
+    conditions:
+      - condition: time
+        after: !input allowed_start
+        before: !input allowed_end
+
+actions:
+  - action: notify.send_message
+    target:
+      entity_id: !input notify_target
+    data:
+      title: Irrigation started outside scheduled hours
+      message: >-
+        {{ trigger.to_state.attributes.friendly_name }} turned on at
+        {{ now().strftime("%-I:%M %p") }}, outside the allowed
+        {{ allowed_start }}-{{ allowed_end }} window.
+
+mode: single

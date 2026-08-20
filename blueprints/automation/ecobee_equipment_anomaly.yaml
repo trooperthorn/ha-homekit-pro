@@ -1,0 +1,90 @@
+blueprint:
+  name: Ecobee Equipment/Status Anomaly Notification
+  description: >-
+    Notify when an Ecobee's thermostat status turns to "alert"/"error", or
+    when heating/cooling/fan/aux equipment has been running continuously
+    longer than expected. Built around the VENDOR_ECOBEE_STATUS_CODE and
+    VENDOR_ECOBEE_EQUIPMENT_RUNNING sensors added by homekit_controller_pro
+    -- see docs/device-notes.md for the caveat that their value mappings
+    were observed on a single unit and not independently confirmed.
+  domain: automation
+  source_url: https://github.com/trooperthorn/ha-homekit-pro/blob/master/blueprints/automation/ecobee_equipment_anomaly.yaml
+  input:
+    status_sensor:
+      name: Ecobee status sensor
+      description: The "Status" sensor (VENDOR_ECOBEE_STATUS_CODE). Leave empty to skip.
+      default: ""
+      selector:
+        entity:
+          domain: sensor
+    equipment_sensor:
+      name: Ecobee equipment-running sensor
+      description: The "Equipment Running" sensor (VENDOR_ECOBEE_EQUIPMENT_RUNNING). Leave empty to skip.
+      default: ""
+      selector:
+        entity:
+          domain: sensor
+    alert_text_sensor:
+      name: Ecobee alert-text sensor (optional)
+      description: The "Alert" sensor (VENDOR_ECOBEE_ALERT_TEXT), included in the notification body if set.
+      default: ""
+      selector:
+        entity:
+          domain: sensor
+    long_run_duration:
+      name: Long-run threshold
+      description: How long equipment must run continuously before this is considered anomalous.
+      default:
+        hours: 3
+      selector:
+        duration: {}
+    notify_target:
+      name: Notify target
+      description: The notify entity to send the alert to.
+      selector:
+        entity:
+          domain: notify
+
+variables:
+  alert_text_entity: !input alert_text_sensor
+
+triggers:
+  - trigger: state
+    entity_id: !input status_sensor
+    to:
+      - alert
+      - error
+    id: status
+  - trigger: state
+    entity_id: !input equipment_sensor
+    to:
+      - heat
+      - cool
+      - fan
+      - aux
+    for: !input long_run_duration
+    id: long_run
+
+conditions: []
+
+actions:
+  - action: notify.send_message
+    target:
+      entity_id: !input notify_target
+    data:
+      title: >-
+        {{ "Ecobee status: " ~ trigger.to_state.state if trigger.id == "status"
+           else "Ecobee equipment running long" }}
+      message: >-
+        {% if trigger.id == "status" %}
+        {{ trigger.to_state.attributes.friendly_name }} changed to "{{ trigger.to_state.state }}".
+        {%- if alert_text_entity and states(alert_text_entity) not in ["unknown", "unavailable", ""] %}
+         Alert text: {{ states(alert_text_entity) }}
+        {%- endif %}
+        {% else %}
+        {{ trigger.to_state.attributes.friendly_name }} has been "{{ trigger.to_state.state }}"
+        for over {{ trigger.for }}.
+        {% endif %}
+
+mode: parallel
+max_exceeded: silent
