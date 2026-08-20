@@ -1,0 +1,20 @@
+{
+  "domain": "homekit_controller_pro",
+  "name": "HomeKit Device (Pro)",
+  "after_dependencies": ["thread"],
+  "bluetooth": [
+    {
+      "manufacturer_data_start": [6],
+      "manufacturer_id": 76
+    }
+  ],
+  "codeowners": ["@trooperthorn"],
+  "config_flow": true,
+  "dependencies": ["bluetooth_adapters", "zeroconf"],
+  "documentation": "https://github.com/trooperthorn/ha-homekit-pro",
+  "integration_type": "device",
+  "iot_class": "local_push",
+  "loggers": ["aiohomekit"],
+  "requirements": ["aiohomekit @ git+https://github.com/trooperthorn/aiohomekit.git"],
+  "zeroconf": ["_hap._tcp.local.", "_hap._udp.local."]
+}
