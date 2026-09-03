@@ -410,10 +410,7 @@ class HomeKitHeaterCoolerEntity(HomeKitBaseClimateEntity):
     @override
     def hvac_mode(self) -> HVACMode:
         """Return hvac operation ie. heat, cool mode."""
-        # This characteristic describes the target mode
-        # E.g. should the device start heating a room if the temperature
-        # falls below the target temperature.
-        # Can be 0 - 2 (Auto, Heat, Cool)
+        # See docs/protocol.md "Climate characteristics".
         if (
             self.service.value(CharacteristicsTypes.ACTIVE)
             == ActivationStateValues.INACTIVE
@@ -723,10 +720,7 @@ class HomeKitClimateEntity(HomeKitBaseClimateEntity):
     @override
     def hvac_mode(self) -> HVACMode:
         """Return hvac operation ie. heat, cool mode."""
-        # This characteristic describes the target mode
-        # E.g. should the device start heating a room if the temperature
-        # falls below the target temperature.
-        # Can be 0 - 3 (Off, Heat, Cool, Auto)
+        # See docs/protocol.md "Climate characteristics".
         value = self.service.value(CharacteristicsTypes.HEATING_COOLING_TARGET)
         return MODE_HOMEKIT_TO_HASS[value]
 

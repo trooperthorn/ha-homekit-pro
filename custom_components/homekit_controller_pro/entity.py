@@ -48,11 +48,7 @@ class HomeKitEntity(Entity):
     @callback
     def _async_handle_entity_removed(self) -> None:
         """Handle entity removal."""
-        # We call _async_unsubscribe_chars as soon as we
-        # know the entity is about to be removed so we do not try to
-        # update characteristics that no longer exist. It will get
-        # called in async_will_remove_from_hass as well, but that is
-        # too late.
+        # See docs/design.md "Entity removal ordering".
         self._async_unsubscribe_chars()
         self.hass.async_create_task(self.async_remove(force_remove=True))
 
@@ -150,10 +146,7 @@ class HomeKitEntity(Entity):
         )
         assert accessory_info
         self.accessory_info = accessory_info
-        # If we re-setup, we need to make sure we make new
-        # lists since we passed them to the connection before
-        # and we do not want to inadvertently modify the old
-        # ones.
+        # See docs/design.md "Fresh characteristic lists on re-setup".
         self.pollable_characteristics = []
         self.watchable_characteristics = []
         self.all_characteristics = set()

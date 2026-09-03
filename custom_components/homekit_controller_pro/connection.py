@@ -117,11 +117,7 @@ class HKDevice:
         # A list of callbacks that turn HK characteristics into entities
         self.char_factories: list[AddCharacteristicCb] = []
 
-        # The platforms we have forwarded the config entry so far. If a new
-        # accessory is added to a bridge we may have to load additional
-        # platforms. We don't want to load all platforms up front if its just
-        # a lightbulb. And we don't want to forward a config entry twice
-        # (triggers a Config entry already set up error)
+        # See docs/design.md "Lazy platform forwarding".
         self.platforms: set[str] = set()
 
         # This just tracks aid/iid pairs so we know if a HK service has been
@@ -286,28 +282,14 @@ class HKDevice:
         transport = pairing.transport
         entry = self.config_entry
 
-        # We need to force an update here to make sure we have
-        # the latest values since the async_update we do in
-        # async_process_entity_map will no values to poll yet
-        # since entities are added via dispatching and then
-        # they add the chars they are concerned about in
-        # async_added_to_hass which is too late.
-        #
-        # Ideally we would know which entities we are about to add
-        # so we only poll those chars but that is not possible
-        # yet.
+        # See docs/design.md "Forced update at setup" and docs/protocol.md
+        # "BLE accessory state".
         attempts = None if self.hass.state is CoreState.running else 1
         if (
             transport is Transport.BLE
             and pairing.accessories
             and pairing.accessories.has_aid(1)
         ):
-            # The GSN gets restored and a catch up poll will be
-            # triggered via disconnected events automatically
-            # if we are out of sync. To be sure we are in sync;
-            # If for some reason the BLE connection failed
-            # previously we force an update after startup
-            # is complete.
             entry.async_on_unload(
                 self.hass.bus.async_listen(
                     EVENT_HOMEASSISTANT_STARTED,
@@ -329,14 +311,7 @@ class HKDevice:
         entry.async_on_unload(self._async_cancel_subscription_timer)
 
         if transport is not Transport.BLE:
-            # Although async_populate_accessories_state fetched the accessory database,
-            # the /accessories endpoint may return cached values from the accessory's
-            # perspective. For example, Ecobee thermostats may report stale temperature
-            # values (like 100°C) in their /accessories response after restarting.
-            # We need to explicitly poll characteristics to get fresh sensor readings
-            # before processing the entity map and creating devices.
-            # Use poll_all=True since entities haven't registered
-            # their characteristics yet.
+            # See docs/protocol.md "IP accessory state after restart".
             try:
                 await self.async_update(poll_all=True)
             except ValueError as exc:
@@ -360,10 +335,7 @@ class HKDevice:
         self.async_set_available_state(self.pairing.is_available)
 
         if transport is Transport.BLE:
-            # If we are using BLE, we need to periodically check of the
-            # BLE device is available since we won't get callbacks
-            # when it goes away since we HomeKit supports disconnected
-            # notifications and we cannot treat a disconnect as unavailability.
+            # See docs/protocol.md "BLE accessory state".
             entry.async_on_unload(
                 async_track_time_interval(
                     self.hass,
@@ -473,10 +445,7 @@ class HKDevice:
                     (DOMAIN, IDENTIFIER_LEGACY_SERIAL_NUMBER, accessory.serial_number)
                 )
 
-            # Resolve to this config entry's own device. Several config entries can share
-            # the legacy identifier, in which case async_get_device returns a read-only
-            # composite spanning them and async_update_device would silently drop the
-            # identifier rename; scope the lookup to this entry instead.
+            # See docs/design.md "Device registry: legacy identifier collisions".
             candidates = device_registry.async_get_devices(identifiers=identifiers)  # type: ignore[arg-type]
             device = next(
                 (
@@ -525,10 +494,7 @@ class HKDevice:
             platform,
         )
         entity_registry = er.async_get(self.hass)
-        # async_get_entity_id wants the "homekit_controller_pro" domain
-        # in the platform field and the actual platform in the domain
-        # field for historical reasons since everything used to be
-        # PLATFORM.INTEGRATION instead of INTEGRATION.PLATFORM
+        # See docs/protocol.md "Entity registry migration".
         if (
             entity_id := entity_registry.async_get_entity_id(
                 platform, DOMAIN, old_unique_id
@@ -601,10 +567,7 @@ class HKDevice:
 
         reg = er.async_get(self.hass)
 
-        # For the current config entry only, visit all registry entity entries
-        # Build a set of (unique_id, aid, sid, iid)
-        # For services, (unique_id, aid, sid, None)
-        # For accessories, (unique_id, aid, None, None)
+        # See docs/design.md "Stale entity registry cleanup".
         entries = er.async_entries_for_config_entry(reg, self.config_entry.entry_id)
         existing_entities = {
             iids: entry.entity_id
@@ -741,11 +704,6 @@ class HKDevice:
         we detect metadata changes via the c# counter on the
         zeroconf record.
         """
-        # Ensure the Pairing object has access to the latest
-        # version of the entity map. This is especially important
-        # for BLE, as the Pairing instance relies on the entity
-        # map to map aid/iid to GATT characteristics. So push it
-        # to there as well.
         self.async_detect_workarounds()
 
         # Migrate to new device ids

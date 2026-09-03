@@ -195,10 +195,8 @@ class HomeKitLight(HomeKitEntity, LightEntity):
                 1, int(brightness * 100 / 255)
             )
 
-        # If they send both temperature and hs_color, and the device
-        # does not support both, temperature will win. This is not
-        # expected to happen in the UI, but it is possible via a manual
-        # service call.
+        # Temperature wins if both are sent and the device doesn't support
+        # both (only reachable via a manual service call, not the UI).
         if temperature_kelvin is not None:
             if self.service.has(CharacteristicsTypes.COLOR_TEMPERATURE):
                 characteristics[CharacteristicsTypes.COLOR_TEMPERATURE] = (
@@ -206,10 +204,7 @@ class HomeKitLight(HomeKitEntity, LightEntity):
                 )
 
             elif hs_color is None:
-                # Some HomeKit devices implement color temperature with HS
-                # since the spec "technically" does not permit the COLOR_TEMPERATURE
-                # characteristic and the HUE and SATURATION characteristics to be
-                # present at the same time.
+                # See docs/protocol.md "Vendor quirks".
                 hue_sat = color_util.color_temperature_to_hs(temperature_kelvin)
                 characteristics[CharacteristicsTypes.HUE] = hue_sat[0]
                 characteristics[CharacteristicsTypes.SATURATION] = hue_sat[1]

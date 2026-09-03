@@ -12,6 +12,9 @@ Installs alongside stock `homekit_controller` under a different domain
 re-paired once under this integration and there's a clean fallback to stock
 HA at any time.
 
+See [docs/README.md](docs/README.md) for architecture, HomeKit protocol
+facts, and dated decisions.
+
 ## Why this exists
 
 Reworking local communication with four paired HomeKit accessories to pull
@@ -88,18 +91,21 @@ yet (tracked for Phase 5).
 
 ## Dependency on the aiohomekit fork
 
-`manifest.json`'s `requirements` pins `aiohomekit` to a GitHub tarball URL
-at a specific commit SHA (`.../archive/<sha>.tar.gz`), not a `git+https`
+`manifest.json`'s `requirements` pins `aiohomekit` to a tagged GitHub
+Release archive (`.../archive/refs/tags/<tag>.zip`), not a `git+https`
 URL. This was deliberate: `git+https` requirements need a `git` executable
 in whatever environment HA's requirements installer runs pip in, which
-Home Assistant OS's container may not have -- verified the tarball
-approach installs cleanly with plain pip (no git) in a fresh, isolated
-venv before switching to it.
+Home Assistant OS's container may not have. Verified both a raw-commit
+tarball and the tagged-release zip install cleanly with plain pip (no
+git) in a fresh, isolated venv before using either. Went with the tagged
+release over a raw commit SHA once one existed -- easier to tell what's
+in it, easier to reference.
 
-**Maintenance implication**: because it's pinned to a commit SHA, pushing
+**Maintenance implication**: pinned to a specific release tag, so pushing
 new commits to the `aiohomekit` fork does **not** automatically flow into
-installs of this integration -- the SHA in `manifest.json` has to be
-bumped by hand after any aiohomekit-fork change that matters here.
+installs of this integration -- cut a new release tag and bump the
+`requirements` URL by hand after any aiohomekit-fork change that matters
+here.
 
 ## Development
 

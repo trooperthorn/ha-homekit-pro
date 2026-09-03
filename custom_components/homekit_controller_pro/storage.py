@@ -76,8 +76,7 @@ class EntityMapStorage:
     def async_delete_map(self, homekit_id: str) -> None:
         """Delete pairing cache."""
         removed_one = False
-        # Previously there was a bug where a lowercase homekit_id was stored
-        # in the storage. We need to account for that.
+        # See docs/decisions.md "lowercase homekit_id storage workaround".
         for hkid in (homekit_id, homekit_id.lower()):
             if hkid not in self.storage_data:
                 continue

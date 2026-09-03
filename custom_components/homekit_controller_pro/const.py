@@ -126,11 +126,8 @@ STARTUP_EXCEPTIONS = (
     AccessoryDisconnectedError,
 )
 
-# 10 seconds was chosen because it is soon enough
-# for most state changes to happen but not too
-# long that the BLE connection is dropped. It
-# also happens to be the same value used by
-# the update coordinator.
+# Long enough for most state changes to land, short enough the BLE
+# connection doesn't drop; matches the update coordinator's interval.
 DEBOUNCE_COOLDOWN = 10  # seconds
 
 SUBSCRIBE_COOLDOWN = 0.25  # seconds

@@ -8,6 +8,7 @@ from aiohomekit.model.services import Service, ServicesTypes
 from aiohomekit.utils import clamp_enum_to_char
 
 from homeassistant.components.event import (
+    DoorbellEventType,
     EventDeviceClass,
     EventEntity,
     EventEntityDescription,
@@ -27,7 +28,7 @@ INPUT_EVENT_VALUES = {
 }
 
 DOORBELL_EVENT_VALUES = {
-    InputEventValues.SINGLE_PRESS: "ring",
+    InputEventValues.SINGLE_PRESS: DoorbellEventType.RING,
     InputEventValues.DOUBLE_PRESS: "double_press",
     InputEventValues.LONG_PRESS: "long_press",
 }

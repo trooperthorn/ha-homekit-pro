@@ -223,10 +223,7 @@ async def async_setup_triggers_for_entry(
         if service_type not in TRIGGER_FINDERS:
             return False
 
-        # We can't have multiple trigger sources for the same device id
-        # Can't have a doorbell and a remote control in the same accessory
-        # They have to be different accessories (they can be on the same bridge)
-        # In practice, this is inline with what iOS actually supports AFAWCT.
+        # See docs/design.md "Device triggers: one trigger source per accessory".
         device_id = conn.devices[aid]
         if TRIGGERS in hass.data and device_id in hass.data[TRIGGERS]:
             return False

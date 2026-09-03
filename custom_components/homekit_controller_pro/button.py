@@ -163,12 +163,7 @@ class HomeKitEcobeeClearHoldButton(BaseHomeKitButton):
         """Press the button."""
         key = self._char.type
 
-        # If we just send true, the request doesn't always get executed by ecobee.
-        # Sending false value then true value will ensure that the hold gets cleared
-        # and schedule resumed.
-        # Ecobee seems to cache the state and not update it correctly, which
-        # causes the request to be ignored if it thinks it has no effect.
-
+        # See docs/protocol.md "Vendor quirks": Ecobee needs false-then-true.
         for val in (False, True):
             await self.async_put_characteristics({key: val})
 

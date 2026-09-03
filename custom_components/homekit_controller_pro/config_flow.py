@@ -253,11 +253,7 @@ class HomekitControllerFlowHandler(ConfigFlow, domain=DOMAIN):
         name = domain_to_name(discovery_info.name)
         _LOGGER.debug("Discovered device %s (%s - %s)", name, model, upper_case_hkid)
 
-        # Device isn't paired with us or anyone else.
-        # But we have a 'complete' config entry for it - that is probably
-        # invalid. Remove it automatically if it has an accessory pairing id
-        # (which means it was paired with us at some point) and was not
-        # ignored by the user.
+        # See docs/design.md "Config flow: cleaning up an orphaned complete entry".
         if (
             not paired
             and existing_entry
@@ -398,22 +394,7 @@ class HomekitControllerFlowHandler(ConfigFlow, domain=DOMAIN):
         self, pair_info: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
         """Pair with a new HomeKit accessory."""
-        # If async_step_pair is called with no pairing code then we do the M1
-        # phase of pairing. If this is successful the device enters pairing
-        # mode.
-
-        # If it doesn't have a screen then the pin is static.
-
-        # If it has a display it will display a pin on that display. In
-        # this case the code is random. So we have to call the async_start_pairing
-        # API before the user can enter a pin. But equally we don't want to
-        # call async_start_pairing when the device is discovered, only when they
-        # click on 'Configure' in the UI.
-
-        # async_start_pairing will make the device show its pin and return a
-        # callable. We call the callable with the pin that the user has typed
-        # in.
-
+        # See docs/design.md "Config flow: the M1 pairing phase and displayed pins".
         # Should never call this step without setting self.hkid
         assert self.hkid
         description_placeholders = {}
@@ -441,11 +422,8 @@ class HomekitControllerFlowHandler(ConfigFlow, domain=DOMAIN):
                 # Library claimed pin was invalid before even making an API call
                 errors["pairing_code"] = "authentication_error"
             except aiohomekit.AuthenticationError:
-                # PairSetup M4 - SRP proof failed
-                # PairSetup M6 - Ed25519 signature verification failed
-                # PairVerify M4 - Decryption failed
-                # PairVerify M4 - Device not recognised
-                # PairVerify M4 - Ed25519 signature verification failed
+                # See docs/protocol.md "Pairing error codes" for which HAP
+                # stage/failure this covers.
                 errors["pairing_code"] = "authentication_error"
                 self.finish_pairing = None
             except aiohomekit.UnknownError:
@@ -566,16 +544,9 @@ class HomekitControllerFlowHandler(ConfigFlow, domain=DOMAIN):
 
     async def _entry_from_accessory(self, pairing: AbstractPairing) -> ConfigFlowResult:
         """Return a config entry from an initialized bridge."""
-        # The bulk of the pairing record is stored on the config entry.
-        # A specific exception is the 'accessories' key. This is more
-        # volatile. We do cache it, but not against the config entry.
-        # So copy the pairing data and mutate the copy.
+        # See docs/design.md "Config flow: caching the accessories list separately".
         pairing_data = pairing.pairing_data.copy()  # type: ignore[attr-defined]
 
-        # Use the accessories data from the pairing operation if it is
-        # available. Otherwise request a fresh copy from the API.
-        # This removes the 'accessories' key from pairing_data at
-        # the same time.
         name = await pairing.get_primary_name()
 
         await pairing.close()

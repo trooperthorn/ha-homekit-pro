@@ -1,0 +1,5 @@
+# Security-sensitive runtime and delivery surfaces require owner review.
+/custom_components/homekit_controller_pro/ @trooperthorn
+/.github/workflows/ @trooperthorn
+/SECURITY.md @trooperthorn
+

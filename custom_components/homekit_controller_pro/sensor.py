@@ -107,17 +107,11 @@ def thread_status_to_str(char: Characteristic) -> str:
     val = ThreadStatus(char.value)
 
     if val & ThreadStatus.BORDER_ROUTER:
-        # Device has joined the Thread network and is participating
-        # in routing between mesh nodes.
-        # It's also the border router - bridging the thread network
-        # to WiFI/Ethernet/etc
+        # See docs/protocol.md "Thread status bitmask".
         return "border_router"
 
     if val & ThreadStatus.LEADER:
-        # Device has joined the Thread network and is participating
-        # in routing between mesh nodes.
-        # It's also the leader. There's only one leader and it manages
-        # which nodes are routers.
+        # See docs/protocol.md "Thread status bitmask".
         return "leader"
 
     if val & ThreadStatus.ROUTER:
