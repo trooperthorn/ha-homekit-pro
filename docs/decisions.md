@@ -1,5 +1,15 @@
 # Decisions
 
+## 2026-09-03: HACS "brands" check ignored
+
+HACS validation fails the `brands` check unless a repository either ships
+`custom_components/homekit_controller_pro/brand/icon.png` or is listed in
+the home-assistant/brands repository. This repository is a personal fork
+installed directly by URL, not a submission to the HACS default store or
+to home-assistant/brands, and has no icon artwork to ship. `validate.yml`
+ignores the `brands` check rather than fabricating a placeholder icon;
+revisit if real brand artwork is ever produced.
+
 ## 2026-09-03: removed the space in the aiohomekit requirement URL
 
 `manifest.json`'s `aiohomekit` requirement used the PEP 508 direct-URL form

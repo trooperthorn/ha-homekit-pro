@@ -14,6 +14,7 @@
   "documentation": "https://github.com/trooperthorn/ha-homekit-pro",
   "integration_type": "device",
   "iot_class": "local_push",
+  "issue_tracker": "https://github.com/trooperthorn/ha-homekit-pro/issues",
   "loggers": ["aiohomekit"],
   "requirements": ["aiohomekit@https://github.com/trooperthorn/aiohomekit/archive/refs/tags/v2026.08.zip"],
   "version": "2026.08.20",
