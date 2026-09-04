@@ -90,7 +90,7 @@ that submits a code once the user has one. A device without a display uses
 a static code the user already knows. A device with a display needs
 `async_start_pairing` called first so it shows a random pin, but that call
 should only happen once the user actually clicks "Configure" in the UI, not
-at discovery time — otherwise every discovered device would start pairing
+at discovery time, otherwise every discovered device would start pairing
 mode unprompted. Calling `async_start_pairing` returns a callable that the
 flow later calls with the code the user types in.
 

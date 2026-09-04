@@ -28,3 +28,15 @@ entry, so a cache entry written under the old lowercase behavior is still
 found and removed. The workaround stays until the storage format is
 verified clean of lowercase-keyed entries across all installs, which cannot
 be confirmed from this repository alone.
+
+## 2026-09-04: Two scanner findings judged not applicable
+
+The `ha-dev-current` scanner flags `sensor.py`'s `self.default_name` under the
+device-registry rule that retires `DeviceInfo(default_name=...)`. That
+attribute is `HomeKitEntity.default_name`, the entity's own property built
+from the characteristic name, and never reaches `DeviceInfo`. It also flags
+the doorbell event entity under the 2027.4 `DoorbellEventType.RING` rule
+because it keys on `EventDeviceClass.DOORBELL`; `DOORBELL_EVENT_VALUES`
+already maps a single press to `DoorbellEventType.RING`, matching core's
+`homekit_controller`. Neither site changes.
+
