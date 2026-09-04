@@ -109,13 +109,21 @@ here.
 
 ## Development
 
+Working files, the virtual environment included, live under `~/workspace`, never inside
+the repository tree. Install the test harness first and the pinned requirements second
+(see `docs/operations.md` for why), then the local aiohomekit fork:
+
 ```bash
-python -m venv .venv
-.venv/Scripts/pip install -r requirements_test.txt
-.venv/Scripts/pip install -e ../aiohomekit-fork
-.venv/Scripts/pytest tests/ -v
-.venv/Scripts/ruff check custom_components/ tests/
+python -m venv ~/workspace/ha-homekit-pro/venv
+~/workspace/ha-homekit-pro/venv/Scripts/pip install pytest-homeassistant-custom-component==0.13.363
+~/workspace/ha-homekit-pro/venv/Scripts/pip install -r requirements_test.txt
+~/workspace/ha-homekit-pro/venv/Scripts/pip install -e ../aiohomekit-fork
+~/workspace/ha-homekit-pro/venv/Scripts/pytest tests/ -v
+~/workspace/ha-homekit-pro/venv/Scripts/ruff check custom_components/ tests/
 ```
+
+The harness imports `fcntl`, so on Windows the suite runs under WSL with a venv in the
+WSL filesystem; the same commands apply with `bin/` in place of `Scripts/`.
 
 Install into a real Home Assistant instance for manual testing by copying
 (or symlinking) `custom_components/homekit_controller_pro/` into that
