@@ -12,7 +12,7 @@ ruff
 # homeassistant package is installed. See docs/operations.md "Bluetooth,
 # USB, and Thread test dependencies".
 aiousbwatcher==1.1.2
-serialx==1.9.0
+serialx==1.10.0
 bleak==3.0.2
 bleak-retry-connector==4.7.0
 bluetooth-adapters==2.4.0
