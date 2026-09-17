@@ -21,7 +21,7 @@ bluetooth-data-tools==1.29.24
 dbus-fast==5.0.22
 habluetooth==6.26.11
 aiohasupervisor==0.6.0
-python-otbr-api==2.10.0
+python-otbr-api==3.0.0
 pyroute2==0.9.6
 
 # aiohomekit is intentionally not pinned here -- install the local fork in
