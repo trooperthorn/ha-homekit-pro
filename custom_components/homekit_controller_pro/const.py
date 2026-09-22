@@ -18,6 +18,19 @@ TRIGGERS = f"{DOMAIN}-triggers"
 HOMEKIT_DIR = ".homekit"
 PAIRING_FILE = "pairing.json"
 
+# When enabled, a media player whose accessory has stopped answering reports
+# itself as off rather than unavailable. A television that is powered off
+# leaves the network entirely, so HomeKit cannot distinguish "device is off"
+# from "device is unreachable", and the default unavailable state reads as an
+# integration fault rather than a switched-off TV.
+#
+# This deliberately applies to media players only. Applying it to sensors
+# would hide a genuinely dead sensor behind a plausible looking state, which
+# is the exact failure this integration went out of its way to surface (see
+# docs/decisions.md, 2026-09-22).
+OPTION_UNREACHABLE_MEDIA_PLAYER_AS_OFF = "unreachable_media_player_as_off"
+DEFAULT_UNREACHABLE_MEDIA_PLAYER_AS_OFF = False
+
 IDENTIFIER_SERIAL_NUMBER = "homekit_controller_pro:serial-number"
 IDENTIFIER_ACCESSORY_ID = "homekit_controller_pro:accessory-id"
 IDENTIFIER_LEGACY_SERIAL_NUMBER = "serial-number"
