@@ -25,6 +25,10 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from . import KNOWN_DEVICES
 from .connection import HKDevice
+from .const import (
+    DEFAULT_UNREACHABLE_MEDIA_PLAYER_AS_OFF,
+    OPTION_UNREACHABLE_MEDIA_PLAYER_AS_OFF,
+)
 from .entity import HomeKitEntity
 
 _LOGGER = logging.getLogger(__name__)
@@ -206,9 +210,36 @@ class HomeKitTelevision(HomeKitEntity, MediaPlayerEntity):
         return speaker.value(CharacteristicsTypes.MUTE)
 
     @property
+    def _report_unreachable_as_off(self) -> bool:
+        """Whether an unreachable accessory should present as off."""
+        return self._accessory.config_entry.options.get(
+            OPTION_UNREACHABLE_MEDIA_PLAYER_AS_OFF,
+            DEFAULT_UNREACHABLE_MEDIA_PLAYER_AS_OFF,
+        )
+
+    @property
+    @override
+    def available(self) -> bool:
+        """Return True if the entity is available.
+
+        With the option enabled an unreachable accessory stays available so
+        that `state` can report it as off. A television that is switched off
+        drops off the network completely, which is indistinguishable over
+        HomeKit from an accessory that has failed, and the default
+        unavailable state reads as a broken integration rather than a TV
+        someone turned off.
+        """
+        if super().available:
+            return True
+        return self._report_unreachable_as_off
+
+    @property
     @override
     def state(self) -> MediaPlayerState:
         """State of the tv."""
+        if self._report_unreachable_as_off and not super().available:
+            return MediaPlayerState.OFF
+
         active = self.service.value(CharacteristicsTypes.ACTIVE)
         if not active:
             return MediaPlayerState.OFF
