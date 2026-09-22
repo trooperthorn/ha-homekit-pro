@@ -17,7 +17,13 @@ from aiohomekit.model.status_flags import StatusFlags
 from aiohomekit.utils import domain_supported, domain_to_name, serialize_broadcast_key
 import voluptuous as vol
 
-from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
+from homeassistant.config_entries import (
+    ConfigEntry,
+    ConfigFlow,
+    ConfigFlowResult,
+    OptionsFlow,
+    OptionsFlowWithReload,
+)
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import AbortFlow
 from homeassistant.helpers import device_registry as dr
@@ -27,7 +33,12 @@ from homeassistant.helpers.service_info.zeroconf import (
 )
 from homeassistant.helpers.typing import VolDictType
 
-from .const import DOMAIN, KNOWN_DEVICES
+from .const import (
+    DEFAULT_UNREACHABLE_MEDIA_PLAYER_AS_OFF,
+    DOMAIN,
+    KNOWN_DEVICES,
+    OPTION_UNREACHABLE_MEDIA_PLAYER_AS_OFF,
+)
 from .storage import async_get_entity_storage
 from .utils import async_get_controller
 
@@ -98,10 +109,47 @@ def ensure_pin_format(pin: str, allow_insecure_setup_codes: Any = None) -> str:
     return "-".join(match.groups())
 
 
+class HomekitControllerOptionsFlowHandler(OptionsFlowWithReload):
+    """Handle the options for a paired HomeKit accessory.
+
+    OptionsFlowWithReload reloads the entry when the options change, so the
+    entities pick the new value up without an update listener. Combining the
+    two is an error from 2026.12 onward.
+    """
+
+    async def async_step_init(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Present the single presentation option."""
+        if user_input is not None:
+            return self.async_create_entry(data=user_input)
+
+        current = self.config_entry.options.get(
+            OPTION_UNREACHABLE_MEDIA_PLAYER_AS_OFF,
+            DEFAULT_UNREACHABLE_MEDIA_PLAYER_AS_OFF,
+        )
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(
+                        OPTION_UNREACHABLE_MEDIA_PLAYER_AS_OFF, default=current
+                    ): bool
+                }
+            ),
+        )
+
+
 class HomekitControllerFlowHandler(ConfigFlow, domain=DOMAIN):
     """Handle a HomeKit config flow."""
 
     VERSION = 1
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
+        """Return the options flow for this entry."""
+        return HomekitControllerOptionsFlowHandler()
 
     def __init__(self) -> None:
         """Initialize the homekit_controller flow."""
