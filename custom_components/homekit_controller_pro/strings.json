@@ -155,5 +155,18 @@
       }
     }
   },
-  "title": "HomeKit Device"
+  "title": "HomeKit Device",
+  "options": {
+    "step": {
+      "init": {
+        "title": "HomeKit Device (Pro) options",
+        "data": {
+          "unreachable_media_player_as_off": "Show unreachable media players as off"
+        },
+        "data_description": {
+          "unreachable_media_player_as_off": "A television that is switched off leaves the network, which HomeKit cannot tell apart from an accessory that has failed. Enable this to show such a media player as off instead of unavailable. It applies to media players only, so a sensor that stops responding still reports as unavailable."
+        }
+      }
+    }
+  }
 }
