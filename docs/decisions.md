@@ -78,6 +78,32 @@ actually wrong (see docs/device-notes.md). Two changes:
   value and would not have caught this. `STATUS_ACTIVE` is the correct
   detector for "this reading is not real data," not a value-range check.
 
+### Tests must drive the dispatch path, not just the entity classes
+
+The first version of these tests constructed `CharacteristicBinarySensor`
+and `HomeKitBatterySensor` objects directly and asserted on `is_on` and
+`native_value`. Those assertions are worth keeping, but on their own they
+would have passed before the fix as well: the entity classes were never
+broken, they were simply never instantiated, because
+`async_add_characteristic` returned `False`.
+
+`tests/conftest.py` therefore grew `dispatch_platform`, which runs a
+platform's real `async_setup_entry`, captures the service listeners and
+characteristic factories it registers, drives them over the whole entity
+map, and returns the entities that were actually added. Entity counts from
+that helper are what pin the regression: the low battery count was 0 before
+this change and is 8 after.
+
+The two dispatch tables are covered separately because they fail
+differently. `CHARACTERISTIC_PLATFORMS` in `const.py` is consumed by
+`connection.py` to decide which platform is offered a characteristic, so it
+is not exercised by driving a single platform's factory; a direct assertion
+covers it. `CHARACTERISTIC_BINARY_SENSORS` in the platform is covered by the
+entity counts. Both mutations were verified to fail the suite before this
+was committed. Registering a characteristic in one table only is the live
+defect behind the missing ecobee `number` entities, so this pairing is the
+guard against repeating it on a new characteristic.
+
 ## 2026-09-04: Two scanner findings judged not applicable
 
 The `ha-dev-current` scanner flags `sensor.py`'s `self.default_name` under the

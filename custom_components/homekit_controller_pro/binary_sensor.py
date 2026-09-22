@@ -367,16 +367,6 @@ def _is_earliest_service_for_characteristic(char: Characteristic) -> bool:
     )
 
 
-def _has_earlier_status_active_characteristic(char: Characteristic) -> bool:
-    """Inverse of _is_earliest_service_for_characteristic, kept as an alias.
-
-    Some callers phrase the STATUS_ACTIVE dedup check as "is there an earlier
-    copy" rather than "is this the earliest copy"; both forms are equivalent
-    and kept so either reads naturally at the call site.
-    """
-    return not _is_earliest_service_for_characteristic(char)
-
-
 def _duplicate_source_key(service: Service) -> str | None:
     """Return the duplicate-detection source key for the service."""
     if (
