@@ -29,6 +29,55 @@ found and removed. The workaround stays until the storage format is
 verified clean of lowercase-keyed entries across all installs, which cannot
 be confirmed from this repository alone.
 
+## 2026-09-22: STATUS_ACTIVE surfaced, STATUS_LO_BATT suppression rule changed
+
+The Rear Bedroom ecobee remote sensor failed on 2026-08-20 and reported it
+three independent ways -- `STATUS_ACTIVE` false on all three of its copies,
+`STATUS_LO_BATT` set on all four of its copies, and `Current Temperature`
+pinned at its declared `maxValue` sentinel (100.0 C) -- while the
+integration surfaced only `BATTERY_LEVEL=100`, the one value that was
+actually wrong (see docs/device-notes.md). Two changes:
+
+- `STATUS_ACTIVE` is now surfaced as a diagnostic binary sensor
+  (`BinarySensorDeviceClass.CONNECTIVITY`, `True` means the sensor is
+  actively reporting valid data; see
+  `homeassistant/components/binary_sensor/__init__.py` line 47 in the core
+  2026.9.1 reference clone: "On means connected, Off means disconnected").
+  Registered in both `binary_sensor.CHARACTERISTIC_BINARY_SENSORS` and
+  `const.CHARACTERISTIC_PLATFORMS`; each remote sensor exposes three copies
+  (Motion/Occupancy/Temperature services) and only one becomes an entity.
+  A name- or service-label-based duplicate key (the approach already used
+  for low battery dedup elsewhere in this file's history) does not work
+  here: each service's own `NAME` characteristic differs from the others
+  (e.g. "Rear Bedroom Motion" vs "Rear Bedroom Occupancy" vs "Rear Bedroom
+  Temperature"), so a same-key comparison never matches and all three
+  copies would become separate entities. `_is_earliest_service_for_characteristic`
+  instead picks whichever service has the lowest `iid`, unconditionally, with
+  no name-based scoping (kept as a separate function from the low battery
+  dedup helper for that reason, rather than sharing one).
+- `STATUS_LO_BATT` no longer suppresses every copy just because the
+  accessory has a `BATTERY_SERVICE`. The old rule
+  (`_should_skip_low_battery_characteristic`) rejected the battery
+  service's own copy outright and then rejected the rest whenever any
+  `BATTERY_SERVICE` existed at all, producing zero low battery entities on
+  any accessory whose battery service also reports `BATTERY_LEVEL` (every
+  ecobee SmartSensor). The new rule (`_is_chosen_low_battery_characteristic`)
+  creates exactly one low battery entity per accessory: the battery
+  service's own copy when the battery service exposes `STATUS_LO_BATT`,
+  otherwise the earliest remaining copy by service iid. This is additive
+  for existing users: it only creates entities where none existed, no
+  entity that previously existed disappears or changes ID.
+- `HomeKitBatterySensor.extra_state_attributes` now includes `low_battery`
+  (bool, from the existing `is_low_battery` property) as a belt-and-braces
+  measure, so the contradiction is visible even on an accessory where no
+  low battery binary sensor entity ends up being created for some other
+  reason.
+- Range/clamp validation on `Current Temperature` was explicitly considered
+  and rejected: 100.0 C sits exactly at the characteristic's own declared
+  `maxValue`, so a clamp or range check would treat it as a valid boundary
+  value and would not have caught this. `STATUS_ACTIVE` is the correct
+  detector for "this reading is not real data," not a value-range check.
+
 ## 2026-09-04: Two scanner findings judged not applicable
 
 The `ha-dev-current` scanner flags `sensor.py`'s `self.default_name` under the

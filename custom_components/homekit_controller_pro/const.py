@@ -85,6 +85,7 @@ CHARACTERISTIC_PLATFORMS = {
     CharacteristicsTypes.SET_DURATION: "number",
     CharacteristicsTypes.STATUS_FAULT: "binary_sensor",
     CharacteristicsTypes.STATUS_LO_BATT: "binary_sensor",
+    CharacteristicsTypes.STATUS_ACTIVE: "binary_sensor",
     CharacteristicsTypes.VENDOR_HAA_SETUP: "button",
     CharacteristicsTypes.VENDOR_HAA_UPDATE: "button",
     CharacteristicsTypes.VENDOR_KOOGEEK_REALTIME_ENERGY: "sensor",
