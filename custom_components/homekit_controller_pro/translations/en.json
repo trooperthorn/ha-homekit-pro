@@ -71,6 +71,11 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "status_active": {
+        "name": "Status active"
+      }
+    },
     "event": {
       "button": {
         "state_attributes": {

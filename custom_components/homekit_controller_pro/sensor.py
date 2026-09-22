@@ -593,6 +593,18 @@ class HomeKitBatterySensor(HomeKitSensor):
         return self.service.value(CharacteristicsTypes.STATUS_LO_BATT) == 1
 
     @property
+    @override
+    def extra_state_attributes(self) -> dict[str, bool]:
+        """Return the low battery flag as an attribute.
+
+        This is a belt-and-braces measure: it is available even in the case
+        where no low battery binary sensor entity is created for this
+        accessory, so the contradiction between a saturated native value and
+        a true low battery status is never invisible.
+        """
+        return {"low_battery": self.is_low_battery}
+
+    @property
     def is_charging(self) -> bool:
         """Return true if currently charging."""
         # 0 = not charging

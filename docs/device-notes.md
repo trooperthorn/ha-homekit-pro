@@ -91,9 +91,40 @@ correcting if this unit's behavior disagrees.
 Occupancy services carry a companion "seconds since last activation"
 vendor characteristic (`BFE61C70-4A40-11E6-BDF4-0800200C9A66` and
 `A8F798E0-4A40-11E6-BDF4-0800200C9A66` respectively) -- these UUID
-suffixes match Elgato Eve's known custom-characteristic pattern. Check
-whether `aiohomekit` already models these under its Eve vendor
-characteristics before treating them as new.
+suffixes match Elgato Eve's known custom-characteristic pattern.
+**Resolved (2026-09-22)**: `aiohomekit` does not model these under its Eve
+vendor characteristics. The fork's `characteristic_types.py` maps them
+under ecobee names instead: `VENDOR_ECOBEE_MOTION_LAST_ACTIVATION`
+(`BFE61C70-...`) and `VENDOR_ECOBEE_OCCUPANCY_LAST_ACTIVATION`
+(`A8F798E0-...`). On a sensor that has not triggered since the ecobee
+bridge last booted, both return `-1`, not `null` -- confirmed in the real
+captured dump (Front BD RM and Rear Bedroom's Motion/Occupancy services
+both read `-1` for these). Not mapped into `homekit_controller_pro` yet;
+out of scope for this pass.
+
+**Rear Bedroom, 2026-08-20 -- dead battery reported three ways, surfaced
+zero ways**: the real diagnostics pull that day captured a remote sensor
+whose battery had actually failed, and every one of the three independent
+signals for that said so, while the integration surfaced none of them:
+- `STATUS_ACTIVE` (`00000075-...`) was `false` on all three of its copies
+  (Motion iid 101, Occupancy iid 117, Temperature iid 211) -- this
+  characteristic means "this sensor is currently reporting valid data" and
+  was not surfaced as an entity at all before this session.
+- `STATUS_LO_BATT` (`00000079-...`) was `1` on both its BATTERY_SERVICE
+  copy (iid 195) and its Temperature-service copy (iid 212) (also `1` on
+  the Motion/Occupancy copies, iids 100 and 116) -- every one of these was
+  suppressed by the old `_should_skip_low_battery_characteristic` logic
+  because the accessory's battery service also carries a `BATTERY_LEVEL`
+  characteristic, producing zero low battery entities for every ecobee
+  remote sensor.
+- `Current Temperature` (`00000011-...`, iid 209) read `100.0` C, which is
+  the characteristic's own declared `maxValue` -- a saturated sentinel, not
+  a real reading.
+- The only thing that actually reached Home Assistant was `BATTERY_LEVEL`
+  (iid 194) reading `100`, i.e. the one value out of four that was wrong.
+This is the case the fix in this repository's binary sensor platform (see
+docs/decisions.md, 2026-09-22) and the regression tests in
+`tests/test_status_active_and_low_battery.py` are built against.
 
 ## First Alert Onelink Safe & Sound (model `1039102`)
 

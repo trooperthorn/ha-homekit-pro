@@ -198,6 +198,14 @@ CHARACTERISTIC_BINARY_SENSORS: dict[str, HomeKitBinarySensorEntityDescription] =
             device_class=BinarySensorDeviceClass.RUNNING,
         )
     ),
+    CharacteristicsTypes.STATUS_ACTIVE: HomeKitBinarySensorEntityDescription(
+        key=CharacteristicsTypes.STATUS_ACTIVE,
+        name="Status Active",
+        translation_key="status_active",
+        device_class=BinarySensorDeviceClass.CONNECTIVITY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_value=True,
+    ),
 }
 
 
@@ -270,12 +278,17 @@ async def async_setup_entry(
 
     @callback
     def async_add_characteristic(char: Characteristic) -> bool:
-        if char.service.type == ServicesTypes.BATTERY_SERVICE:
+        if char.type == CharacteristicsTypes.STATUS_LO_BATT:
+            if not _is_chosen_low_battery_characteristic(char):
+                return False
+        elif char.service.type == ServicesTypes.BATTERY_SERVICE:
             return False
+
         if not (description := CHARACTERISTIC_BINARY_SENSORS.get(char.type)):
             return False
-        if char.type == CharacteristicsTypes.STATUS_LO_BATT and (
-            _should_skip_low_battery_characteristic(char)
+
+        if char.type == CharacteristicsTypes.STATUS_ACTIVE and not (
+            _is_earliest_service_for_characteristic(char)
         ):
             return False
 
@@ -290,29 +303,72 @@ async def async_setup_entry(
     conn.add_char_factory(async_add_characteristic)
 
 
-def _should_skip_low_battery_characteristic(char: Characteristic) -> bool:
-    """Check if the low battery characteristic should not create an entity."""
-    return char.service.accessory.services.first(
-        service_type=ServicesTypes.BATTERY_SERVICE
-    ) is not None or _has_earlier_low_battery_characteristic(char)
+def _is_chosen_low_battery_characteristic(char: Characteristic) -> bool:
+    """Check if this is the one STATUS_LO_BATT characteristic to create an entity for.
 
-
-def _has_earlier_low_battery_characteristic(char: Characteristic) -> bool:
-    """Check if the accessory already exposed the same low battery source.
-
-    Unscoped low battery characteristics are treated as accessory-level duplicates.
+    Exactly one low battery entity is created per accessory: the accessory's
+    own BATTERY_SERVICE copy when it exposes STATUS_LO_BATT, otherwise the
+    earliest remaining service that exposes it. The BATTERY_SERVICE's copy is
+    skipped here when the service-level HomeKitBatteryLowSensor already
+    represents it (that happens when the battery service has no BATTERY_LEVEL
+    characteristic); this characteristic-level path only needs to take over
+    when a BATTERY_LEVEL characteristic is also present on the battery
+    service, which previously caused the accessory to end up with zero low
+    battery entities at all (see docs/decisions.md, 2026-09-22).
     """
-    source_key = _low_battery_source_key(char.service)
+    accessory = char.service.accessory
+    battery_service = accessory.services.first(
+        service_type=ServicesTypes.BATTERY_SERVICE
+    )
+
+    if battery_service is not None and battery_service.has(
+        CharacteristicsTypes.STATUS_LO_BATT
+    ):
+        if not battery_service.has(CharacteristicsTypes.BATTERY_LEVEL):
+            return False
+        return char.service is battery_service
+
+    return not _has_earlier_duplicate_characteristic(char)
+
+
+def _has_earlier_duplicate_characteristic(char: Characteristic) -> bool:
+    """Check if the accessory already exposed an earlier copy of this characteristic.
+
+    Unscoped characteristics (no distinguishing service label or service name)
+    are treated as accessory-level duplicates; only the earliest by service
+    iid becomes an entity. Used as the STATUS_LO_BATT fallback when the
+    accessory has no BATTERY_SERVICE copy to prefer (see
+    _is_chosen_low_battery_characteristic).
+    """
+    source_key = _duplicate_source_key(char.service)
     return any(
         service.iid < char.service.iid
         and service.has(char.type)
-        and _low_battery_source_key(service) == source_key
+        and _duplicate_source_key(service) == source_key
         for service in char.service.accessory.services
     )
 
 
-def _low_battery_source_key(service: Service) -> str | None:
-    """Return the low battery source key for the service."""
+def _is_earliest_service_for_characteristic(char: Characteristic) -> bool:
+    """Check if this characteristic's service is the earliest one exposing it.
+
+    Unlike low battery, STATUS_ACTIVE's Motion/Occupancy/Temperature copies on
+    the same remote sensor carry distinct per-service names (for example
+    "Great Room Motion" vs "Great Room Temperature"), so the name-based
+    source key used for low battery would treat them as separate sources and
+    fail to deduplicate. STATUS_ACTIVE means the same thing on every copy
+    ("this sensor is currently reporting valid data"), so dedup here is
+    simply by service iid, with no source-key distinction: only the
+    characteristic on the lowest-iid service becomes an entity.
+    """
+    return not any(
+        service.iid < char.service.iid and service.has(char.type)
+        for service in char.service.accessory.services
+    )
+
+
+def _duplicate_source_key(service: Service) -> str | None:
+    """Return the duplicate-detection source key for the service."""
     if (
         service_label_index := service.value(CharacteristicsTypes.SERVICE_LABEL_INDEX)
     ) is not None:
