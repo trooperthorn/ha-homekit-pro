@@ -14,3 +14,6 @@ or agent) knows where to look.
   platform-specific quirk that affects how it's configured.
 - [device-notes.md](device-notes.md): per-device notes from real HA
   diagnostics exports for specific paired accessories.
+- [cutover.md](cutover.md): moving an accessory from core's
+  `homekit_controller` to this fork, and why the two cannot both hold a
+  pairing.
