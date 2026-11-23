@@ -133,7 +133,7 @@ async def async_setup_entry(
 class HomeKitBaseClimateEntity(HomeKitEntity, ClimateEntity):
     """The base HomeKit Controller climate entity."""
 
-    _attr_temperature_unit = UnitOfTemperature.CELSIUS
+    _attr_native_temperature_unit = UnitOfTemperature.CELSIUS
 
     @callback
     @override
@@ -152,7 +152,7 @@ class HomeKitBaseClimateEntity(HomeKitEntity, ClimateEntity):
 
     @property
     @override
-    def current_temperature(self) -> float | None:
+    def native_current_temperature(self) -> float | None:
         """Return the current temperature."""
         return self.service.value(CharacteristicsTypes.TEMPERATURE_CURRENT)
 
@@ -307,7 +307,7 @@ class HomeKitHeaterCoolerEntity(HomeKitBaseClimateEntity):
 
     @property
     @override
-    def target_temperature(self) -> float | None:
+    def native_target_temperature(self) -> float | None:
         """Return the temperature we try to reach."""
         state = self.service.value(CharacteristicsTypes.TARGET_HEATER_COOLER_STATE)
         if state == TargetHeaterCoolerStateValues.COOL:
@@ -569,7 +569,7 @@ class HomeKitClimateEntity(HomeKitBaseClimateEntity):
 
     @property
     @override
-    def target_temperature(self) -> float | None:
+    def native_target_temperature(self) -> float | None:
         """Return the temperature we try to reach."""
         value = self.service.value(CharacteristicsTypes.HEATING_COOLING_TARGET)
         if (MODE_HOMEKIT_TO_HASS.get(value) in {HVACMode.HEAT, HVACMode.COOL}) or (
@@ -582,7 +582,7 @@ class HomeKitClimateEntity(HomeKitBaseClimateEntity):
 
     @property
     @override
-    def target_temperature_high(self) -> float | None:
+    def native_target_temperature_high(self) -> float | None:
         """Return the highbound target temperature we try to reach."""
         value = self.service.value(CharacteristicsTypes.HEATING_COOLING_TARGET)
         if (MODE_HOMEKIT_TO_HASS.get(value) == HVACMode.HEAT_COOL) and (
@@ -595,7 +595,7 @@ class HomeKitClimateEntity(HomeKitBaseClimateEntity):
 
     @property
     @override
-    def target_temperature_low(self) -> float | None:
+    def native_target_temperature_low(self) -> float | None:
         """Return the lowbound target temperature we try to reach."""
         value = self.service.value(CharacteristicsTypes.HEATING_COOLING_TARGET)
         if (MODE_HOMEKIT_TO_HASS.get(value) == HVACMode.HEAT_COOL) and (

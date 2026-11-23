@@ -1,7 +1,7 @@
 pytest==9.2.0
 pytest-asyncio
-homeassistant==2026.10.2
-ruff==0.17.6
+homeassistant==2026.11.0
+ruff
 
 # See docs/operations.md "Installing the test harness" for why
 # pytest-homeassistant-custom-component isn't pinned in this file.
