@@ -1,4 +1,4 @@
-pytest==9.1.1
+pytest==9.2.0
 pytest-asyncio
 homeassistant==2026.11.0
 ruff
@@ -12,7 +12,7 @@ ruff
 # homeassistant package is installed. See docs/operations.md "Bluetooth,
 # USB, and Thread test dependencies".
 aiousbwatcher==1.1.2
-serialx==1.11.0
+serialx==1.15.1
 bleak==3.0.2
 bleak-retry-connector==4.7.1
 bluetooth-adapters==2.4.0
@@ -20,8 +20,8 @@ bluetooth-auto-recovery==1.6.4
 bluetooth-data-tools==1.29.24
 dbus-fast==5.2.0
 habluetooth==7.1.2
-aiohasupervisor==0.6.0
-python-otbr-api==2.10.0
+aiohasupervisor==0.11.0
+python-otbr-api==3.1.0
 pyroute2==0.9.6
 
 # aiohomekit is intentionally not pinned here -- install the local fork in
