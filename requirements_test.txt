@@ -22,7 +22,7 @@ dbus-fast==5.2.0
 habluetooth==7.1.2
 aiohasupervisor==0.11.0
 python-otbr-api==3.1.0
-pyroute2==0.9.6
+pyroute2==0.9.7
 
 # aiohomekit is intentionally not pinned here -- install the local fork in
 # editable mode instead, see README.md "Development".
