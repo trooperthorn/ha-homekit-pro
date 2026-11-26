@@ -13,7 +13,7 @@ ruff
 # USB, and Thread test dependencies".
 aiousbwatcher==1.1.2
 serialx==1.15.1
-bleak==3.0.2
+bleak==3.1.0
 bleak-retry-connector==4.7.1
 bluetooth-adapters==2.4.0
 bluetooth-auto-recovery==1.6.4
