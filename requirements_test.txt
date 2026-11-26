@@ -1,6 +1,6 @@
 pytest==9.2.0
 pytest-asyncio
-homeassistant==2026.11.0
+homeassistant==2026.11.2
 ruff
 
 # See docs/operations.md "Installing the test harness" for why
